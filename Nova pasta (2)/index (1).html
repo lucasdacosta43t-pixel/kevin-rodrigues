@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kevin Rodrigues | Advocacia Criminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b0b0d;
+    --panel:#131315;
+    --panel-2:#1b1b1e;
+    --line: rgba(198,203,210,0.14);
+    --silver:#c6cbd2;
+    --silver-bright:#eef0f2;
+    --text:#a8acb3;
+    --text-dim:#6c6f75;
+    --oxblood:#7d1226;
+    --oxblood-bright:#a3182f;
+    --paper:#eae6da;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--oxblood);color:var(--silver-bright);}
+
+  .grain{
+    position:fixed; inset:0; z-index:999; pointer-events:none; opacity:0.035; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  a{color:inherit; text-decoration:none;}
+  .mono{font-family:'IBM Plex Mono', monospace; letter-spacing:0.08em;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 5vw;
+    transition:background .4s ease, border-color .4s ease, padding .4s ease;
+    border-bottom:1px solid transparent;
+  }
+  header.scrolled{
+    background:rgba(11,11,13,0.86);
+    backdrop-filter:blur(10px);
+    border-color:var(--line);
+    padding:14px 5vw;
+  }
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand img{height:34px; width:34px; border-radius:6px; object-fit:cover;}
+  .brand-text{font-family:'Fraunces',serif; font-size:15px; letter-spacing:0.06em; color:var(--silver-bright);}
+  .brand-text span{display:block; font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.25em; color:var(--text-dim); margin-top:2px;}
+
+  nav ul{list-style:none; display:flex; gap:42px;}
+  nav a{
+    font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--text);
+    position:relative; padding-bottom:4px;
+  }
+  nav a::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--oxblood-bright);
+    transition:width .35s ease;
+  }
+  nav a:hover{color:var(--silver-bright);}
+  nav a:hover::after{width:100%;}
+  .nav-toggle{display:none;}
+
+  /* ---------- FOLIO NUMBERS ---------- */
+  .folio{
+    position:absolute; top:28px; right:5vw; font-size:11px; color:var(--text-dim);
+    letter-spacing:0.18em;
+  }
+  section{position:relative;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    align-items:stretch;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-copy{
+    display:flex; flex-direction:column; justify-content:center;
+    padding:0 5vw; padding-top:80px; position:relative; z-index:2;
+  }
+  .eyebrow{
+    display:flex; align-items:center; gap:14px; margin-bottom:28px;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.24em; color:var(--oxblood-bright);
+    text-transform:uppercase;
+    opacity:0; transform:translateY(14px); animation:riseIn .9s .2s ease forwards;
+  }
+  .eyebrow::before{content:''; width:34px; height:1px; background:var(--oxblood-bright);}
+  h1.title{
+    font-family:'Fraunces',serif; font-weight:600; color:var(--silver-bright);
+    font-size:clamp(2.6rem, 5.2vw, 5rem); line-height:1.02; letter-spacing:-0.01em;
+    opacity:0; transform:translateY(18px); animation:riseIn .9s .35s ease forwards;
+  }
+  h1.title em{font-style:italic; font-weight:500; color:var(--silver);}
+  .hero-sub{
+    max-width:480px; margin-top:26px; font-size:16px; line-height:1.75; color:var(--text);
+    opacity:0; transform:translateY(18px); animation:riseIn .9s .55s ease forwards;
+  }
+  .hero-cta{
+    display:flex; gap:16px; margin-top:44px; flex-wrap:wrap;
+    opacity:0; transform:translateY(18px); animation:riseIn .9s .75s ease forwards;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:15px 26px; font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    border:1px solid var(--line); transition:all .35s ease; position:relative; overflow:hidden;
+  }
+  .btn-solid{background:var(--oxblood); border-color:var(--oxblood); color:var(--silver-bright);}
+  .btn-solid:hover{background:var(--oxblood-bright); border-color:var(--oxblood-bright); transform:translateY(-2px);}
+  .btn-ghost{color:var(--silver-bright);}
+  .btn-ghost:hover{border-color:var(--silver); background:rgba(255,255,255,0.03); transform:translateY(-2px);}
+  .btn svg{width:15px; height:15px;}
+
+  .hero-photo{
+    position:relative; overflow:hidden;
+    background:linear-gradient(180deg, #17171a, #0b0b0d);
+  }
+  .hero-photo img{
+    width:100%; height:100%; object-fit:cover; object-position:center 20%;
+    filter:grayscale(0.55) contrast(1.08) brightness(0.92);
+    transform:scale(1.08);
+    animation:photoIn 1.6s ease forwards;
+  }
+  .hero-photo::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(90deg, var(--ink) 0%, rgba(11,11,13,0) 18%), linear-gradient(0deg, rgba(11,11,13,0.55), rgba(11,11,13,0) 40%);
+  }
+  .hero-mark{
+    position:absolute; bottom:36px; right:36px; z-index:2;
+    font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--silver); letter-spacing:0.2em;
+    writing-mode:vertical-rl; opacity:0.7;
+  }
+
+  @keyframes riseIn{to{opacity:1; transform:translateY(0);}}
+  @keyframes photoIn{from{transform:scale(1.15); filter:grayscale(0.8) brightness(0.6);} to{transform:scale(1.08); filter:grayscale(0.55) contrast(1.08) brightness(0.92);}}
+
+  .scroll-cue{
+    position:absolute; bottom:30px; left:5vw; display:flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.2em; color:var(--text-dim);
+    text-transform:uppercase;
+  }
+  .scroll-cue .line{width:1px; height:34px; background:var(--text-dim); position:relative; overflow:hidden;}
+  .scroll-cue .line::after{content:''; position:absolute; top:-100%; left:0; width:100%; height:100%; background:var(--oxblood-bright); animation:scrollLine 2.2s ease-in-out infinite;}
+  @keyframes scrollLine{0%{top:-100%;} 60%{top:100%;} 100%{top:100%;}}
+
+  /* ---------- REVEAL ---------- */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .8s ease, transform .8s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- SECTION SHELL ---------- */
+  .section{padding:150px 5vw;}
+  .section-head{display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:70px; flex-wrap:wrap; gap:20px;}
+  .kicker{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.22em; color:var(--oxblood-bright); text-transform:uppercase; margin-bottom:16px; display:block;}
+  h2.h-title{font-family:'Fraunces',serif; font-weight:600; font-size:clamp(2rem,3.4vw,3rem); color:var(--silver-bright); max-width:640px; line-height:1.12;}
+  .section-note{max-width:280px; font-size:13px; line-height:1.7; color:var(--text-dim); text-align:right;}
+
+  /* ---------- ATUACAO (areas) ---------- */
+  .areas{border-top:1px solid var(--line);}
+  .area-item{
+    display:grid; grid-template-columns:90px 1fr 40px; align-items:center;
+    padding:34px 0; border-bottom:1px solid var(--line);
+    transition:padding .4s ease;
+    cursor:default;
+  }
+  .area-item:hover{padding-left:14px; background:rgba(198,203,210,0.02);}
+  .area-num{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--text-dim);}
+  .area-name{font-family:'Fraunces',serif; font-size:clamp(1.2rem,2vw,1.7rem); color:var(--silver-bright); font-weight:500;}
+  .area-item p{font-size:13px; color:var(--text-dim); max-width:520px; margin-top:8px; line-height:1.6; display:none;}
+  .area-item:hover p{display:block;}
+  .area-arrow{width:16px; height:16px; opacity:0.4; transition:transform .4s ease, opacity .4s ease;}
+  .area-item:hover .area-arrow{transform:translateX(6px); opacity:1;}
+
+  /* ---------- SOBRE ---------- */
+  .sobre{background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .sobre-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:80px; align-items:center;}
+  .sobre-quote{
+    font-family:'Fraunces',serif; font-style:italic; font-weight:500; color:var(--silver-bright);
+    font-size:clamp(1.4rem,2.2vw,1.9rem); line-height:1.5; position:relative; padding-left:28px;
+  }
+  .sobre-quote::before{content:''; position:absolute; left:0; top:6px; bottom:6px; width:2px; background:var(--oxblood-bright);}
+  .sobre-body{margin-top:34px; font-size:15px; line-height:1.85; color:var(--text); max-width:520px;}
+  .sobre-stats{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); margin-top:48px; border:1px solid var(--line);}
+  .stat{background:var(--panel); padding:26px 28px;}
+  .stat b{font-family:'Fraunces',serif; font-size:2.1rem; color:var(--silver-bright); font-weight:600; display:block;}
+  .stat span{font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim);}
+
+  .sobre-frame{position:relative; aspect-ratio:4/5; overflow:hidden; border:1px solid var(--line);}
+  .sobre-frame img{width:100%; height:100%; object-fit:cover; object-position:top; filter:grayscale(0.5) contrast(1.05);}
+  .sobre-frame .tag{
+    position:absolute; bottom:0; left:0; right:0; padding:16px 20px;
+    background:linear-gradient(0deg, rgba(11,11,13,0.9), transparent);
+    font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.15em; color:var(--silver);
+  }
+
+  /* ---------- DIFERENCIAIS ---------- */
+  .dif-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .dif-card{background:var(--ink); padding:44px 34px; transition:background .4s ease;}
+  .dif-card:hover{background:var(--panel-2);}
+  .dif-icon{width:34px; height:34px; margin-bottom:26px; color:var(--oxblood-bright);}
+  .dif-card h3{font-family:'Fraunces',serif; font-size:1.25rem; color:var(--silver-bright); font-weight:600; margin-bottom:14px;}
+  .dif-card p{font-size:13.5px; line-height:1.75; color:var(--text-dim);}
+
+  /* ---------- CONTATO ---------- */
+  .contato{
+    background:var(--panel); border-top:1px solid var(--line);
+    text-align:center; padding-bottom:180px; overflow:hidden;
+  }
+  .contato-inner{max-width:680px; margin:0 auto; position:relative;}
+  .contato h2{
+    font-family:'Fraunces',serif; font-weight:600; color:var(--silver-bright);
+    font-size:clamp(2.2rem,5vw,4rem); line-height:1.08; margin-bottom:26px;
+  }
+  .contato p.sub{font-size:15px; color:var(--text-dim); max-width:460px; margin:0 auto 50px; line-height:1.7;}
+  .contato-actions{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; position:relative; z-index:3;}
+
+  .stamp{
+    position:absolute; top:-64px; right:-40px; width:150px; height:150px;
+    border:3px solid var(--oxblood-bright); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    color:var(--oxblood-bright); font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em;
+    text-transform:uppercase; transform:rotate(-14deg) scale(0.6); opacity:0;
+    filter:blur(0.3px);
+    pointer-events:none;
+  }
+  .stamp.stamped{animation:stampHit .55s cubic-bezier(.2,1.4,.4,1) forwards;}
+  .stamp::before{
+    content:''; position:absolute; inset:6px; border:1px solid var(--oxblood-bright); border-radius:50%; opacity:0.6;
+  }
+  @keyframes stampHit{
+    0%{opacity:0; transform:rotate(-14deg) scale(2.4);}
+    55%{opacity:1; transform:rotate(-14deg) scale(0.92);}
+    75%{transform:rotate(-14deg) scale(1.04);}
+    100%{opacity:1; transform:rotate(-14deg) scale(1);}
+  }
+
+  footer{
+    border-top:1px solid var(--line); padding:34px 5vw;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+  }
+  footer p{font-size:11px; color:var(--text-dim); letter-spacing:0.04em;}
+  .footer-social{display:flex; gap:22px;}
+  .footer-social a{font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text); transition:color .3s ease;}
+  .footer-social a:hover{color:var(--silver-bright);}
+
+  .whatsapp-float{
+    position:fixed; bottom:28px; right:28px; z-index:90;
+    width:58px; height:58px; border-radius:50%; background:var(--oxblood);
+    display:flex; align-items:center; justify-content:center; color:var(--silver-bright);
+    box-shadow:0 10px 30px rgba(0,0,0,0.5); transition:transform .3s ease, background .3s ease;
+  }
+  .whatsapp-float:hover{background:var(--oxblood-bright); transform:scale(1.08);}
+  .whatsapp-float svg{width:26px; height:26px;}
+  .whatsapp-float .ping{
+    position:absolute; inset:0; border-radius:50%; border:2px solid var(--oxblood-bright);
+    animation:ping 2.2s ease-out infinite;
+  }
+  @keyframes ping{0%{transform:scale(1); opacity:0.7;} 100%{transform:scale(1.7); opacity:0;}}
+
+  @media (max-width:860px){
+    nav{display:none;}
+    .hero{grid-template-columns:1fr; grid-template-rows:auto 46vh;}
+    .hero-photo{order:-1; height:46vh;}
+    .hero-copy{padding-top:120px;}
+    .sobre-grid{grid-template-columns:1fr; gap:50px;}
+    .sobre-frame{max-width:340px;}
+    .dif-grid{grid-template-columns:1fr;}
+    .area-item{grid-template-columns:50px 1fr;}
+    .area-arrow{display:none;}
+    .section{padding:110px 6vw;}
+    .section-note{text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header id="siteHeader">
+  <div class="brand">
+    <img src="logo.jpg" alt="Kevin Rodrigues Advogado">
+    <div class="brand-text">Kevin Rodrigues<span>ADVOCACIA CRIMINAL</span></div>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="#atuacao">Atuação</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#diferenciais">Diferenciais</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow mono">Advocacia Criminal · Defesa Técnica</div>
+    <h1 class="title">A defesa que <em>a sua liberdade</em> exige.</h1>
+    <p class="hero-sub">Atuação criminal séria e estratégica, do inquérito ao trânsito em julgado. Kevin Rodrigues constrói cada defesa com técnica, sigilo e presença firme em cada fase do processo.</p>
+    <div class="hero-cta">
+      <a class="btn btn-solid" href="https://wa.me/556182302034?text=Ol%C3%A1%2C%20Dr.%20Kevin%2C%20preciso%20de%20uma%20orienta%C3%A7%C3%A3o%20jur%C3%ADdica." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.33 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2Zm5.83 14.08c-.25.7-1.23 1.28-2 1.44-.55.12-1.26.21-3.65-.78-2.98-1.24-4.9-4.26-5.05-4.46-.15-.2-1.2-1.6-1.2-3.05s.75-2.17 1.02-2.46c.25-.28.55-.35.73-.35h.53c.17 0 .4-.03.62.48.25.6.83 2.06.9 2.2.07.15.12.32.02.52-.1.2-.15.33-.3.5-.15.18-.32.4-.45.53-.15.15-.31.31-.13.62.17.3.78 1.28 1.68 2.08 1.15 1.03 2.12 1.35 2.43 1.5.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.28.1 1.77.84 2.08 1 .3.15.5.22.58.35.07.13.07.72-.18 1.42Z"/></svg>
+        Fale no WhatsApp
+      </a>
+      <a class="btn btn-ghost" href="#atuacao">
+        Áreas de atuação
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="hero-photo">
+    <img src="foto.jpg" alt="Kevin Rodrigues, advogado criminalista">
+    <div class="hero-mark mono">OAB · ADVOCACIA CRIMINAL</div>
+  </div>
+  <div class="scroll-cue"><span class="line"></span>Role</div>
+</section>
+
+<section class="section areas" id="atuacao">
+  <div class="folio mono">FLS. 01</div>
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">Áreas de atuação</span>
+      <h2 class="h-title">Defesa técnica em todas as fases do processo penal</h2>
+    </div>
+    <p class="section-note">Passe o cursor sobre cada área para ver o detalhe do que compõe a atuação.</p>
+  </div>
+
+  <div class="area-item reveal">
+    <span class="area-num mono">Art. 1º</span>
+    <div>
+      <div class="area-name">Defesa em Inquérito e Processo Penal</div>
+      <p>Acompanhamento desde a fase policial, com estratégia definida antes mesmo da instauração da ação penal.</p>
+    </div>
+    <svg class="area-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </div>
+  <div class="area-item reveal">
+    <span class="area-num mono">Art. 2º</span>
+    <div>
+      <div class="area-name">Audiência de Custódia</div>
+      <p>Atuação imediata nas primeiras 24 horas, buscando a soltura ou a aplicação de medidas menos gravosas.</p>
+    </div>
+    <svg class="area-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </div>
+  <div class="area-item reveal">
+    <span class="area-num mono">Art. 3º</span>
+    <div>
+      <div class="area-name">Tribunal do Júri</div>
+      <p>Preparação de tese, plenário e oratória voltados a crimes dolosos contra a vida.</p>
+    </div>
+    <svg class="area-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </div>
+  <div class="area-item reveal">
+    <span class="area-num mono">Art. 4º</span>
+    <div>
+      <div class="area-name">Habeas Corpus e Liberdade Provisória</div>
+      <p>Medidas urgentes para reverter prisões e restrições ilegais ou desproporcionais.</p>
+    </div>
+    <svg class="area-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </div>
+  <div class="area-item reveal">
+    <span class="area-num mono">Art. 5º</span>
+    <div>
+      <div class="area-name">Crimes Digitais e Empresariais</div>
+      <p>Defesa em crimes cibernéticos, financeiros e de colarinho branco, com sigilo reforçado.</p>
+    </div>
+    <svg class="area-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </div>
+  <div class="area-item reveal">
+    <span class="area-num mono">Art. 6º</span>
+    <div>
+      <div class="area-name">Execução Penal e Recursos</div>
+      <p>Progressão de regime, revisão criminal e recursos junto aos tribunais superiores.</p>
+    </div>
+    <svg class="area-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </div>
+</section>
+
+<section class="section sobre" id="sobre">
+  <div class="folio mono">FLS. 02</div>
+  <div class="sobre-grid">
+    <div class="sobre-frame reveal">
+      <img src="foto.jpg" alt="Kevin Rodrigues">
+      <div class="tag mono">KEVIN RODRIGUES · ADVOGADO</div>
+    </div>
+    <div class="reveal">
+      <span class="kicker">Sobre</span>
+      <p class="sobre-quote">"Toda acusação tem uma versão. A minha função é garantir que a versão da defesa seja ouvida com a mesma força."</p>
+      <p class="sobre-body">Kevin Rodrigues atua na área criminal com foco em análise técnica do processo, atenção aos prazos e presença constante ao lado de quem está sendo acusado. Cada caso é conduzido com sigilo, clareza sobre os próximos passos e uma defesa construída sobre os fatos e o direito — sem promessas fáceis, com trabalho sério.</p>
+      <div class="sobre-stats">
+        <div class="stat"><b>24h</b><span>Suporte em urgências</span></div>
+        <div class="stat"><b>100%</b><span>Sigilo profissional</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="diferenciais">
+  <div class="folio mono">FLS. 03</div>
+  <div class="section-head reveal">
+    <div>
+      <span class="kicker">Diferenciais</span>
+      <h2 class="h-title">Como a defesa é conduzida</h2>
+    </div>
+  </div>
+  <div class="dif-grid reveal">
+    <div class="dif-card">
+      <svg class="dif-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4Z"/></svg>
+      <h3>Sigilo absoluto</h3>
+      <p>Informações do caso tratadas com confidencialidade em todas as etapas, da consulta inicial ao arquivamento do processo.</p>
+    </div>
+    <div class="dif-card">
+      <svg class="dif-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 8v5l3 3M12 3a9 9 0 1 0 .01 0Z"/></svg>
+      <h3>Resposta rápida</h3>
+      <p>Atendimento prioritário em situações de urgência, como prisões em flagrante e audiências de custódia.</p>
+    </div>
+    <div class="dif-card">
+      <svg class="dif-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 19V5a1 1 0 0 1 1-1h9l6 6v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z"/><path d="M14 4v6h6"/></svg>
+      <h3>Estratégia própria</h3>
+      <p>Cada defesa é construída caso a caso, com estudo aprofundado dos autos e das provas antes de qualquer decisão.</p>
+    </div>
+  </div>
+</section>
+
+<section class="contato" id="contato">
+  <div class="folio mono">FLS. 04</div>
+  <div class="contato-inner reveal">
+    <div class="stamp mono" id="stamp">Defesa<br>Imediata</div>
+    <span class="kicker">Contato</span>
+    <h2>Precisa falar agora?</h2>
+    <p class="sub">Casos criminais costumam ser urgentes. Fale diretamente com Kevin Rodrigues por WhatsApp ou acompanhe os bastidores da advocacia no Instagram.</p>
+    <div class="contato-actions">
+      <a class="btn btn-solid" href="https://wa.me/556182302034?text=Ol%C3%A1%2C%20Dr.%20Kevin%2C%20preciso%20de%20uma%20orienta%C3%A7%C3%A3o%20jur%C3%ADdica." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.33 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2Zm5.83 14.08c-.25.7-1.23 1.28-2 1.44-.55.12-1.26.21-3.65-.78-2.98-1.24-4.9-4.26-5.05-4.46-.15-.2-1.2-1.6-1.2-3.05s.75-2.17 1.02-2.46c.25-.28.55-.35.73-.35h.53c.17 0 .4-.03.62.48.25.6.83 2.06.9 2.2.07.15.12.32.02.52-.1.2-.15.33-.3.5-.15.18-.32.4-.45.53-.15.15-.31.31-.13.62.17.3.78 1.28 1.68 2.08 1.15 1.03 2.12 1.35 2.43 1.5.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.28.1 1.77.84 2.08 1 .3.15.5.22.58.35.07.13.07.72-.18 1.42Z"/></svg>
+        WhatsApp
+      </a>
+      <a class="btn btn-ghost" href="https://instagram.com/" target="_blank" rel="noopener" id="instaLink">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+        Instagram
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Kevin Rodrigues Advocacia. Todos os direitos reservados.</p>
+  <div class="footer-social">
+    <a href="https://wa.me/556182302034" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="https://instagram.com/" target="_blank" rel="noopener" id="instaFooter">Instagram</a>
+  </div>
+</footer>
+
+<a class="whatsapp-float" href="https://wa.me/556182302034?text=Ol%C3%A1%2C%20Dr.%20Kevin%2C%20preciso%20de%20uma%20orienta%C3%A7%C3%A3o%20jur%C3%ADdica." target="_blank" rel="noopener" aria-label="WhatsApp">
+  <span class="ping"></span>
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.33 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2Zm5.83 14.08c-.25.7-1.23 1.28-2 1.44-.55.12-1.26.21-3.65-.78-2.98-1.24-4.9-4.26-5.05-4.46-.15-.2-1.2-1.6-1.2-3.05s.75-2.17 1.02-2.46c.25-.28.55-.35.73-.35h.53c.17 0 .4-.03.62.48.25.6.83 2.06.9 2.2.07.15.12.32.02.52-.1.2-.15.33-.3.5-.15.18-.32.4-.45.53-.15.15-.31.31-.13.62.17.3.78 1.28 1.68 2.08 1.15 1.03 2.12 1.35 2.43 1.5.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.28.1 1.77.84 2.08 1 .3.15.5.22.58.35.07.13.07.72-.18 1.42Z"/></svg>
+</a>
+
+<script>
+  // header scroll state
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el => io.observe(el));
+
+  // stagger area items
+  document.querySelectorAll('.area-item').forEach((el,i) => {
+    el.style.transitionDelay = (i*0.05)+'s';
+  });
+
+  // stamp animation on contact section
+  const stamp = document.getElementById('stamp');
+  const stampObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        setTimeout(()=> stamp.classList.add('stamped'), 400);
+        stampObserver.disconnect();
+      }
+    });
+  }, {threshold:0.4});
+  stampObserver.observe(document.getElementById('contato'));
+
+  // respect reduced motion
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+    document.documentElement.style.setProperty('scroll-behavior','auto');
+  }
+</script>
+
+</body>
+</html>
