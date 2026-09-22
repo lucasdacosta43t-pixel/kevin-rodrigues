@@ -88,7 +88,7 @@ footer{background:#120e0c;color:#cfc5be;padding:30px 0}
  .stat b{font-size:20px} .footer-inner{flex-direction:column;text-align:center}
 }
 </style>
-</head>
+<style>header{transition:.3s;box-shadow:0 4px 25px rgba(40,20,10,.07)}.hero{position:relative;overflow:hidden}.hero:before{content:"";position:absolute;width:500px;height:500px;border-radius:50%;right:-180px;top:-180px;background:linear-gradient(135deg,rgba(196,123,73,.18),rgba(224,181,34,.08));animation:float 8s ease-in-out infinite}.hero:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;left:-130px;bottom:-130px;background:rgba(113,21,43,.06);animation:float 7s ease-in-out infinite reverse}.hero-card{animation:heroIn 1s ease both}.card,.service{transition:transform .35s,box-shadow .35s}.card:hover,.service:hover{transform:translateY(-9px);box-shadow:0 25px 55px rgba(65,39,25,.14)}.btn{transition:.3s}.btn:hover{transform:translateY(-4px)}.reveal{opacity:0;transform:translateY(25px);transition:opacity .7s,transform .7s}.reveal.visible{opacity:1;transform:translateY(0)}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}@keyframes heroIn{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:scale(1)}}</style></head>
 <body>
 
 <header>
@@ -181,7 +181,7 @@ footer{background:#120e0c;color:#cfc5be;padding:30px 0}
       <div class="contact-card">
         <h3>Atendimento</h3>
         <a class="contact-row" href="https://wa.me/5511995782060" target="_blank"><div class="icon">💬</div><div><small>WhatsApp</small><strong>(11) 99578-2060</strong></div></a>
-        <a class="contact-row" href="tel:+551149662739"><div class="icon">☎️</div><div><small>Telefone fixo</small><strong>(11) 4966-2739</strong></div></a>
+        <a class="contact-row" href="tel:+551149662739"><div class="icon">☎️</div><div><small>Telefone fixo</small><strong>(11) 4966-2739</strong></div></a><div class="emails" style="margin-top:18px;padding-top:16px;border-top:1px solid #e4d8cf"><div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#706862">E-mails</div><a href="mailto:administrativo@angellservices.com.br" style="display:block;padding:6px 0;color:#8a4b24;font-weight:700">✉ administrativo@angellservices.com.br</a><a href="mailto:operacional@angellservices.com.br" style="display:block;padding:6px 0;color:#8a4b24;font-weight:700">✉ operacional@angellservices.com.br</a><a href="mailto:diretoria@angellservices.com.br" style="display:block;padding:6px 0;color:#8a4b24;font-weight:700">✉ diretoria@angellservices.com.br</a></div>
       </div>
       <div class="contact-card" style="background:#211814;color:#fff">
         <h3>Solicite seu orçamento</h3>
@@ -199,5 +199,5 @@ footer{background:#120e0c;color:#cfc5be;padding:30px 0}
     <div>© 2026 Angell Services. Segurança • Limpeza • Portaria</div>
   </div>
 </footer>
-</body>
+<script>const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:.12});document.querySelectorAll(".card,.service,.section-head,.about-image").forEach(e=>{e.classList.add("reveal");ro.observe(e)});window.addEventListener("scroll",()=>document.querySelector("header").style.boxShadow=scrollY>20?"0 10px 30px rgba(40,20,10,.12)":"0 4px 25px rgba(40,20,10,.07)");</script></body>
 </html>
